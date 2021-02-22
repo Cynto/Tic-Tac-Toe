@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    overflow: hidden;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: rgb(151, 136, 151);
+}
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 70px;
+    position: relative;
+    top: -13.69%;
+    color: rgb(22, 105, 122);
+    text-shadow: rgb(36, 79, 97) 4px 2px;
+    border: 3px solid rgb(22, 105, 122);
+    width: 99.4%;
+    text-align: center;
+    
+    background: rgb(127, 178, 133);
+    height: 12%
+}
+.game-container {
+    display: flex;
+    justify-content: center;
+    border-radius: 5px;
+    background: rgb(22, 105, 122);
+    width: 500px;
+    height: 500px;
+    flex-wrap: wrap;
+    align-content: center;
+    box-shadow: rgb(36, 79, 97) 5px 5px;
+}
+
+.field-button {
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+    outline: none;
+    background: rgb(22, 105, 122);
+    font-size: 80px;
+    border-color: rgb(120, 192, 224);
+    color: rgb(189, 234, 224);
+}
+.field-button:focus {
+    outline: none;
+}
+.field-button:nth-child(1) {
+    border-top: none;
+    border-left: none;
+}
+.field-button:nth-child(2) {
+    border-top: none;
+    
+}
+.field-button:nth-child(3) {
+    border-top: none;
+    border-right: none;
+}
+.field-button:nth-child(4) {
+    border-left: none;
+}
+.field-button:nth-child(6) {
+    border-right: none;
+}
+.field-button:nth-child(7) {
+    border-bottom: none;
+    border-left: none;
+}
+.field-button:nth-child(8) {
+    border-bottom: none;
+    
+}
+.field-button:nth-child(9) {
+    border-bottom: none;
+    border-right: none;
+}
+.reset {
+    visibility: hidden;
+    color: rgb(22, 105, 122);
+    background: rgb(130, 228, 248);
+    
+    font-size: 30px;
+    font-weight: bolder;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    border: none;
+    box-shadow: rgb(22, 105, 122) 2px 2px;
+
+}
+
+.reset:hover {
+    background: rgb(189, 234, 224);
+}
+.reset:focus {
+    outline: none;
+}
+
+.end-text {
+    font-size: 80px;
+    color: rgb(130, 228, 248);
+}
