@@ -1,6 +1,8 @@
 "use strict";
 const DOM = (() => {
     const fieldButton = document.querySelectorAll('.field-button');
+    const xButton = document.querySelector('#X');
+    const oButton = document.querySelector('#O');
     const resetButton = document.querySelector('.reset');
     const gameContainer = document.querySelector('.game-container');
     const endText = document.querySelector('.end-text');
@@ -18,11 +20,47 @@ const DOM = (() => {
             case 'endText':
                 return endText;
             break;
+            case 'xButton':
+                return xButton;
+            break;
+            case 'yButton':
+                return oButton;
+            break;
 
         }
     }
     return{getButton}
 })()
+const player = () => {
+
+    const xButton = DOM.getButton('xButton');
+    const oButton = DOM.getButton('yButton');
+    
+    
+    let symbol = 'X'
+    const getSymbol = () => {
+        return symbol
+    }
+
+    xButton.addEventListener('click', () => {
+        xButton.classList.add('pressed')
+        oButton.classList.remove('pressed')
+        oButton.classList.add('unpressed')
+        symbol = 'X'
+    } )
+    oButton.addEventListener('click', () => {
+        oButton.classList.add('pressed')
+        xButton.classList.remove('pressed')
+        xButton.classList.add('unpressed')
+        symbol = 'O'
+    } )
+   
+    
+
+    return{getSymbol}
+   
+}
+const player1 = player();
 const gameBoard = (() => {
     let playerTurn = true;
     const getTurn = () => {
@@ -72,6 +110,7 @@ const gameBoard = (() => {
     const reset = () => {
         const resetButton = DOM.getButton('reset');
         resetButton.setAttribute('style', 'visibility: visible');
+        const gameContainer = DOM.getButton('gameContainer')
 
         resetButton.addEventListener('click', () => {
             window.location.reload(true);
@@ -83,34 +122,72 @@ const gameBoard = (() => {
 })();
 
 
+const AI = (() => {
+    const fieldButton = DOM.getButton('field')
+    const computerSymbol = (player1.getSymbol() === 'X') ? 'O' : 'X';
+    let computerTurn = false;
+    
+    const getComputerTurn = () => {return computerTurn}
+    
+    const randomIndex = () => {
+        let index = Math.floor(Math.random() * 9);
+        return index
+    }
+    const easyAI = (board) => {
+        
+        let index = randomIndex()
+            
+        if(fieldButton[index].textContent != 'X' && fieldButton[index].textContent != 'O') {
+            board[index] = fieldButton[index].textContent = computerSymbol;
+            gameBoard.checkForWinner(board, board[index]) 
+            setTimeout(gameBoard.checkForWinner, 800, board, board[index]);
+        }
+        else{
+            easyAI(board)
+                
+        }
+
+            
+        
+        
+        
+    }
+    
+
+
+
+
+    return {easyAI, getComputerTurn}
+})()
+
+
 const displayController = (() => {
     const fieldButton = DOM.getButton('field')
     let board = gameBoard.getBoard();
     let fullCount = 0;
     
-    let playerTurn = gameBoard.getTurn();
+    
     const renderBoard = (xORy) => {
         for(let i = 0; i < fieldButton.length; i++) {
             
             fieldButton[i].addEventListener('click', () => {
+                let computerTurn = AI.getComputerTurn()
+                let symbol = player1.getSymbol();
                 const hasWon = gameBoard.getHasWon();
                 
-                if(fieldButton[i].textContent === '' && playerTurn === true && hasWon === false) {
-                    board[i] = fieldButton[i].textContent = 'X'
-                    playerTurn = false;
-                    displayController.renderBoard(board[i]); 
-                    gameBoard.checkForWinner(board, board[i])
-                    
+                if(fieldButton[i].textContent === '' && computerTurn === false && hasWon === false) {
+                    board[i] = fieldButton[i].textContent = symbol
+                    console.log(gameBoard.checkForWinner(board, 'X') != 'Winner')
+                    if(gameBoard.checkForWinner(board, 'X') != 'Winner') {
+                        setTimeout(AI.easyAI, 500, board);
+                        computerTurn = true;
+                        console.log('hi')
+                    }
                 
-                }
-                else if(fieldButton[i].textContent === '' && playerTurn === false && hasWon === false) {
-                    board[i] = fieldButton[i].textContent = 'O'
-                    playerTurn = true;
-                    displayController.renderBoard(board[i]); 
-                    gameBoard.checkForWinner(board, board[i])
                 }
                 if(fullCount === 45) {
                     gameBoard.reset();
+                    endBoard('tie')
                 }
             })
 
@@ -126,10 +203,19 @@ const displayController = (() => {
     }
     const endBoard = (xORy) => {
         const gameContainer = DOM.getButton('gameContainer');
-        gameContainer.querySelectorAll('*').forEach(n => n.remove())
         const endText = DOM.getButton('endText');
-        endText.textContent = xORy + ' Wins!';
-        gameContainer.appendChild(endText)
+        if(xORy != 'tie') {
+            gameContainer.querySelectorAll('*').forEach(n => n.remove())
+        
+            endText.textContent = xORy + ' Wins!';
+            gameContainer.appendChild(endText)
+        }
+        else {
+            gameContainer.querySelectorAll('*').forEach(n => n.remove())
+        
+            endText.textContent = 'It\'s a tie!';
+            gameContainer.appendChild(endText)
+        }
         
     }
 
@@ -138,13 +224,6 @@ const displayController = (() => {
 
 console.log(displayController.renderBoard())
 
-const player = () => {
-
-    const player1 = () => {
-        return 'X'
-    };
 
 
 
-    return{player1}
-}

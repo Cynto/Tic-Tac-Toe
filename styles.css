@@ -21,16 +21,19 @@ header {
     align-items: center;
     font-size: 70px;
     position: relative;
-    top: -13.69%;
+    
     color: rgb(22, 105, 122);
     text-shadow: rgb(36, 79, 97) 4px 2px;
     border: 3px solid rgb(22, 105, 122);
     width: 99.4%;
     text-align: center;
-    
+    font-weight: bolder;
     background: rgb(127, 178, 133);
-    height: 12%
+    height: 12%;
+   
+    top: -11.2%;
 }
+
 .game-container {
     display: flex;
     justify-content: center;
@@ -41,6 +44,8 @@ header {
     flex-wrap: wrap;
     align-content: center;
     box-shadow: rgb(36, 79, 97) 5px 5px;
+    position: relative;
+    
 }
 
 .field-button {
@@ -88,28 +93,87 @@ header {
 }
 .reset {
     visibility: hidden;
-    color: rgb(22, 105, 122);
-    background: rgb(130, 228, 248);
+    background: rgb(22, 105, 122);
+    color: rgb(130, 228, 248);
     
     font-size: 30px;
     font-weight: bolder;
     padding: 10px;
-    border-radius: 5px;
+   
     cursor: pointer;
     margin-top: 20px;
     border: none;
-    box-shadow: rgb(22, 105, 122) 2px 2px;
+    box-shadow: rgb(36, 79, 97) 3px 3px;
 
 }
 
 .reset:hover {
-    background: rgb(189, 234, 224);
+    background: rgb(50, 154, 175);
 }
 .reset:focus {
     outline: none;
+    box-shadow: none;
+    transform: translateX(2px);
+    border: 0.5px solid rgb(22, 105, 122);
 }
-
+.main-container {
+    width: 100%;
+    display: flex;
+    min-height: 550px
+}
 .end-text {
     font-size: 80px;
+    font-weight: bolder;
     color: rgb(130, 228, 248);
+}
+
+.button-container {
+    height: 500px;
+    width: 250px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.top-buttons {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.top-buttons button:hover {
+    background: rgb(50, 154, 175);
+}
+.top-buttons button:focus {
+    outline: none;
+    background: rgb(50, 154, 175);
+    box-shadow: none;
+    transform: translateX(2px);
+}
+.unpressed {
+    font-weight: bolder;
+    font-size: 30px;
+    cursor: pointer;
+    margin: 20px;
+    padding: 10px 25px;
+    background: rgb(22, 105, 122);
+    border: 0.5px solid rgb(22, 105, 122);
+    color: rgb(189, 234, 224);
+    box-shadow: rgb(36, 79, 97) 2px 2px;
+}
+.pressed {
+    font-weight: bolder;
+    font-size: 30px;
+    cursor: pointer;
+    margin: 20px;
+    padding: 10px 25px;
+    outline: none;
+    background: rgb(50, 154, 175);
+    box-shadow: none;
+    border: 0.5px solid rgb(22, 105, 122);
+    transform: translateX(2px);
+    color: rgb(189, 234, 224);
 }
