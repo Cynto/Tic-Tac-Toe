@@ -129,7 +129,7 @@ header {
 
 .button-container {
     height: 500px;
-    width: 250px;
+    width: 200px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -176,4 +176,13 @@ header {
     border: 0.5px solid rgb(22, 105, 122);
     transform: translateX(2px);
     color: rgb(189, 234, 224);
+}
+
+.difficulty {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
 }
