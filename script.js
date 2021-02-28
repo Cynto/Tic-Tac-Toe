@@ -8,6 +8,9 @@ const DOM = (() => {
     const endText = document.querySelector('.end-text');
     const easyButton = document.querySelector('#easy');
     const mediumButton = document.querySelector('#medium');
+    const playerScore = document.querySelector('.player-score-number');
+    const computerScore = document.querySelector('.computer-score-number');
+
     const getButton = (button) => {
         switch(button) {
             case 'reset': 
@@ -33,6 +36,12 @@ const DOM = (() => {
             break;
             case 'mediumButton':
                 return mediumButton;
+            break;
+            case 'playerScore':
+                return playerScore;
+            break;
+            case 'computerScore':
+                return computerScore;
             break;
 
         }
@@ -63,18 +72,19 @@ const gameBoard = (() => {
     const checkForWinner = (board, xORy) => {
         //checks for horizontal win
         
-        if(board[6] === board[7] && board[6] === board[8] && board[6] != ''||
-            board[3] === board[4] && board[3] === board[5] && board[3] != ''||
-            board[0] === board[1] && board[0] === board[2] && board[0] != '' ||
+        if(board[6] === board[7] && board[6] === board[8] && board[6] != '' && hasWon === false||
+            board[3] === board[4] && board[3] === board[5] && board[3] != '' && hasWon === false||
+            board[0] === board[1] && board[0] === board[2] && board[0] != '' && hasWon === false||
             
             //checks for vertical win
-            board[8] === board[5] && board[8] === board[2] && board[8] != ''||
-            board[7] === board[4] && board[7] === board[1] && board[7] != ''||
-            board[6] === board[3] && board[6] === board[0] && board[6] != '' ||
+            board[8] === board[5] && board[8] === board[2] && board[8] != '' && hasWon === false||
+            board[7] === board[4] && board[7] === board[1] && board[7] != '' && hasWon === false||
+            board[6] === board[3] && board[6] === board[0] && board[6] != '' && hasWon === false||
             
             //checks for diagonal win
-            board[8] === board[4] && board[8] === board[0] && board[8] != '' ||
-            board[6] === board[4] && board[6] === board[2] && board[6] != '' ) {
+            board[8] === board[4] && board[8] === board[0] && board[8] != '' && hasWon === false||
+            board[6] === board[4] && board[6] === board[2] && board[6] != '' && hasWon === false) {
+                
                 hasWon = true;
                 reset(xORy);
                 
@@ -85,6 +95,7 @@ const gameBoard = (() => {
         else if(board[0] != '' && board[1] != '' && board[2] != '' && board[3] != '' && board[4] != '' &&
         board[5] != '' && board[6] != '' && board[7] != '' && board[8] != ''){
             hasWon = true;
+            console.log('hi')
                 reset();
                 displayController.endBoard('tie');
                 return 'Winner'
@@ -123,7 +134,26 @@ const gameBoard = (() => {
     return {getBoard, checkForWinner, getTurn, getHasWon, reset}
 })();
 const player = () => {
-
+    let playerScore = 0;
+    
+    const addToPlayerScore = () => {
+        playerScore += 1;
+        console.log(playerScore)
+        localStorage.setItem('playerScore', playerScore);
+        const playerScoreText = DOM.getButton('playerScore');
+        console.log(playerScoreText)
+        playerScoreText.textContent = playerScore;
+        return playerScore;
+    }
+    const getPlayerScoreStorage = () => {
+        if(Number(localStorage.playerScore) >= 1) {
+            playerScore = Number(localStorage.playerScore)
+            const playerScoreText = DOM.getButton('playerScore');
+            playerScoreText.textContent = playerScore;
+            return playerScore;
+        }
+    }
+    
 
     const xButton = DOM.getButton('xButton');
     const oButton = DOM.getButton('yButton');
@@ -160,17 +190,33 @@ const player = () => {
    
     
 
-    return{getSymbol}
+    return{getSymbol, getPlayerScoreStorage, addToPlayerScore}
    
 }
 const player1 = player();
 const AI = (() => {
+    let computerScore = 0;
+    const addToComputerScore = () => {
+        const computerScoreText = DOM.getButton('computerScore');
+        computerScore += 1;
+        computerScoreText.textContent = computerScore;
+        localStorage.setItem('computerScore', computerScore)
+        return computerScore
+    }
     const fieldButton = DOM.getButton('field');
     const easyButton = DOM.getButton('easyButton');
     const mediumButton = DOM.getButton('mediumButton');
     let board = gameBoard.getBoard();
     let difficulty = 'easy';
     
+    const getComputerScoreStorage = () => {
+        if(Number(localStorage.computerScore) >= 1) {
+            computerScore = Number(localStorage.computerScore)
+            const computerScoreText = DOM.getButton('computerScore');
+            computerScoreText.textContent = computerScore;
+            return computerScore;
+        }
+    }
     const getDifficulty = () => {
         return difficulty
     }
@@ -459,7 +505,7 @@ const AI = (() => {
 
 
 
-    return {easyAI, getComputerTurn, mediumAI, getDifficulty, turnReset}
+    return {easyAI, getComputerTurn, mediumAI, getDifficulty, turnReset, addToComputerScore, getComputerScoreStorage}
 })()
 
 
@@ -510,7 +556,14 @@ const displayController = (() => {
         
     }
     const endBoard = (xORy) => {
+        const playerSymbol = player1.getSymbol()
         
+        if(xORy === playerSymbol) {
+            player1.addToPlayerScore();
+        }
+        if(xORy != playerSymbol && xORy != 'tie') {
+            AI.addToComputerScore();
+        }
         const gameContainer = DOM.getButton('gameContainer');
         const endText = DOM.getButton('endText');
         if(xORy != 'tie') {
@@ -532,7 +585,8 @@ const displayController = (() => {
 })();
 
 console.log(displayController.renderBoard())
-
+console.log(AI.getComputerScoreStorage())
+console.log(player1.getPlayerScoreStorage())
 
 
 
