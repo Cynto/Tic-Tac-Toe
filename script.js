@@ -10,6 +10,7 @@ const DOM = (() => {
     const mediumButton = document.querySelector('#medium');
     const playerScore = document.querySelector('.player-score-number');
     const computerScore = document.querySelector('.computer-score-number');
+    const resetScoreButton = document.querySelector('.reset-score')
 
     const getButton = (button) => {
         switch(button) {
@@ -42,6 +43,9 @@ const DOM = (() => {
             break;
             case 'computerScore':
                 return computerScore;
+            break;
+            case 'resetScore':
+                return resetScoreButton;
             break;
 
         }
@@ -135,25 +139,31 @@ const gameBoard = (() => {
 })();
 const player = () => {
     let playerScore = 0;
+    const getPlayerScore = () => {
+        return playerScore
+    }
     
     const addToPlayerScore = () => {
         playerScore += 1;
-        console.log(playerScore)
+        
         localStorage.setItem('playerScore', playerScore);
         const playerScoreText = DOM.getButton('playerScore');
-        console.log(playerScoreText)
+
         playerScoreText.textContent = playerScore;
         return playerScore;
     }
-    const getPlayerScoreStorage = () => {
+    const getPlayerScoreStorage = (() => {
         if(Number(localStorage.playerScore) >= 1) {
             playerScore = Number(localStorage.playerScore)
             const playerScoreText = DOM.getButton('playerScore');
             playerScoreText.textContent = playerScore;
             return playerScore;
         }
-    }
-    
+    })()
+    const resetPlayerScore = () => {
+        localStorage.setItem('playerScore', 0);
+        playerScore = 0;
+    }    
 
     const xButton = DOM.getButton('xButton');
     const oButton = DOM.getButton('yButton');
@@ -190,12 +200,16 @@ const player = () => {
    
     
 
-    return{getSymbol, getPlayerScoreStorage, addToPlayerScore}
+    return{getSymbol, getPlayerScoreStorage, addToPlayerScore, resetPlayerScore,
+    getPlayerScore}
    
 }
 const player1 = player();
 const AI = (() => {
     let computerScore = 0;
+    const getComputerScore = () => {
+        return computerScore
+    }
     const addToComputerScore = () => {
         const computerScoreText = DOM.getButton('computerScore');
         computerScore += 1;
@@ -209,14 +223,19 @@ const AI = (() => {
     let board = gameBoard.getBoard();
     let difficulty = 'easy';
     
-    const getComputerScoreStorage = () => {
+    const getComputerScoreStorage = (() => {
         if(Number(localStorage.computerScore) >= 1) {
             computerScore = Number(localStorage.computerScore)
             const computerScoreText = DOM.getButton('computerScore');
             computerScoreText.textContent = computerScore;
             return computerScore;
         }
-    }
+    })();
+    const resetComputerScore = () => {
+        localStorage.setItem('computerScore', 0);
+        computerScore = 0;
+    }  
+
     const getDifficulty = () => {
         return difficulty
     }
@@ -505,7 +524,8 @@ const AI = (() => {
 
 
 
-    return {easyAI, getComputerTurn, mediumAI, getDifficulty, turnReset, addToComputerScore, getComputerScoreStorage}
+    return {easyAI, getComputerTurn, mediumAI, getDifficulty, turnReset, 
+        addToComputerScore, getComputerScoreStorage, resetComputerScore, getComputerScore}
 })()
 
 
@@ -515,7 +535,7 @@ const displayController = (() => {
     let fullCount = 0;
     
     
-    const renderBoard = (xORy) => {
+    const renderBoard = ((xORy) => {
         for(let i = 0; i < fieldButton.length; i++) {
             
             fieldButton[i].addEventListener('click', () => {
@@ -554,7 +574,7 @@ const displayController = (() => {
        
     
         
-    }
+    })();
     const endBoard = (xORy) => {
         const playerSymbol = player1.getSymbol()
         
@@ -583,10 +603,28 @@ const displayController = (() => {
 
     return {renderBoard, endBoard}
 })();
+const resetScore = (() => {
+    
+    const playerScoreText = DOM.getButton('playerScore');
+    const computerScoreText = DOM.getButton('computerScore');
+    const resetScoreButton = DOM.getButton('resetScore');
 
-console.log(displayController.renderBoard())
-console.log(AI.getComputerScoreStorage())
-console.log(player1.getPlayerScoreStorage())
+    resetScoreButton.addEventListener('click', () => {
+        player1.resetPlayerScore()
+        AI.resetComputerScore();
+        const playerScore = player1.getPlayerScore();
+        const computerScore = AI.getComputerScore();
+        computerScoreText.textContent = computerScore;
+        playerScoreText.textContent = playerScore;
+        
+
+    });
+    
+})();
+
+
+
+
 
 
 
