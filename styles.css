@@ -51,8 +51,7 @@ header {
 
 .field-button {
     width: 150px;
-    height: 150px;
-    cursor: pointer;
+    height: 150px;    cursor: pointer;
     outline: none;
     background: rgb(22, 105, 122);
     font-size: 80px;
@@ -252,7 +251,7 @@ header {
 
 .reset-score {
     
-    
+    font-weight: bolder;
     cursor: pointer;
     padding: 10px 25px;
     background: rgb(22, 105, 122);
@@ -272,4 +271,53 @@ header {
 }
 .reset-score:hover {
     background: rgb(50, 154, 175);
+}
+
+@media only screen and (max-width: 815px) { 
+    body {
+        max-height: 200vh;
+    } header{
+        top: 0;
+        display: none;
+    }
+    .button-container {
+        display: none;
+    }
+    .difficulty {
+        height: 200px;
+        margin: 0;
+    }
+    .game-container {
+        width: 300px;
+        height: 300px;
+        margin: 0;
+    }
+    .main-container {
+        flex-wrap: wrap;
+        align-content: flex-start;
+        height: 300px;
+        
+    }
+    
+    .field-button {
+        width: 90px;
+        height: 90px;
+    }
+    .scoreboard {
+        width: 300px;
+        font-size: 10px;
+    }
+    .scoreboard h1 {
+        font-size: 40px;
+    }
+    .end-text {
+        font-size: 45px;
+    }
+    .reset {
+        margin-top: 0;
+        height: 80px;
+        padding: 10px 20px;
+        position: relative;
+        top: -2%;
+    }
 }
